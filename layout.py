@@ -28,7 +28,7 @@ class GridNodes(object):
 
 class GridWorld(object):
 	"""Grid World creation class"""
-	def __init__(self, col=5, row=5, size=100,generator=random_generation):
+	def __init__(self, col=5, row=5, size=100, maze_generator=random_generation):
 		self.col = col
 		self.row = row
 		self.size = size
@@ -62,7 +62,7 @@ class GridWorld(object):
 			x = x + size
 		
 
-		random_generation(self)
+		maze_generator(self)
 
 		# self.canvas.delete("square")
 
