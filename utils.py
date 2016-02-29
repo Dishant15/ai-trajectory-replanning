@@ -9,6 +9,22 @@ def random_generation(grid):
 			if random.random() < 0.3:
 				grid.nodes[x][y].block_node()
 
+	while True:
+		agent = random.randint(0, cols-1) , random.randint(0, rows-1)
+		if not grid.get_node(agent).is_blocked():
+			break
+
+	while True:
+		goal = random.randint(0, cols-1) , random.randint(0, rows-1)
+		if not grid.get_node(goal).is_blocked():
+			break
+
+	return [agent, goal]
+
+
+def manhattan_distance(pos1, pos2):
+	return abs(pos2[0]-pos1[0]) + abs(pos2[1]-pos1[1])
+
 
 class Heap(object):
 	"""
@@ -55,7 +71,7 @@ class Heap(object):
 	def update(self, i):
 		p = self.parent(i)
 		if p > 0:
-			if self.get_key(p) < self.get_key(i):
+			if self.get_key(p) > self.get_key(i):
 				self.swap(p,i)
 				self.update(p)
 
@@ -63,20 +79,20 @@ class Heap(object):
 		r = self.right(i)
 		l = self.left(i)
 
-		if l <= self.length and self.get_key(l) > self.get_key(i):
-			largest = l
+		if l <= self.length and self.get_key(l) < self.get_key(i):
+			smalest = l
 		else:
-			largest = i
+			smalest = i
 
-		if r <= self.length and self.get_key(r) > self.get_key(largest):
-			largest = r
+		if r <= self.length and self.get_key(r) < self.get_key(smalest):
+			smalest = r
 
-		if largest != i:
-			self.swap(largest, i)
-			self.max_heapify(largest)
+		if smalest != i:
+			self.swap(smalest, i)
+			self.max_heapify(smalest)
 
 	def pop(self):
-		"""get the largest priority element"""
+		"""get the smalest priority element"""
 		prio_element = self.get(1)
 		self.swap(1, self.length)
 		self.length -= 1
@@ -109,4 +125,6 @@ if __name__ == '__main__':
 	print heap.pop()
 
 	print heap
+
+	print manhattan_distance( (2,0), (4,4) )
 		
