@@ -35,11 +35,12 @@ class Heap(object):
 		self.length = 0
 
 	def __repr__(self):
-		return str(self.heap[1:self.length])
+		return str(self.heap[1:self.length+1])
 
 	def swap(self, a, b):
 		self.heap[a] , self.heap[b] = self.heap[b] , self.heap[a]
-
+		self.heap[a].i = a
+		self.heap[b].i = b
 
 	def get(self, i):
 		# Maintain 1 base indexing rather than 0 base
@@ -63,9 +64,13 @@ class Heap(object):
 		return (2*i) + 1
 
 	def add(self, element, key):
-		self.heap.append(element)
-		element.key = key
 		self.length += 1
+		try:
+			self.heap[self.length] = element
+		except Exception, e:
+			self.heap.append(element)
+		element.key = key
+		element.i = self.length
 		self.update(self.length)
 
 	def update(self, i):
@@ -75,9 +80,17 @@ class Heap(object):
 				self.swap(p,i)
 				self.update(p)
 
+	def update_key(self, i, key):
+		element = self.get(i)
+		element.key = key
+		self.update(i)
+
+
 	def max_heapify(self, i):
 		r = self.right(i)
 		l = self.left(i)
+
+		smalest = i
 
 		if l <= self.length and self.get_key(l) < self.get_key(i):
 			smalest = l
@@ -110,21 +123,24 @@ if __name__ == '__main__':
 
 	l = []
 
-	for x in xrange(1,10):
-		l.append(Test(random.randint(1,100)))
+	s = Test(5)
+	temp = Test(random.randint(2,10))
+	for x in xrange(1,6):
+		l.append(temp)
+		temp = Test(random.randint(1,10))
 
-	print l
+	print "This is l",l
 
 	heap = Heap()
 			
 	for x in l:
 		heap.add(x,x.val)
+
+	heap.add(s,s.val)
 		
+	print "This is heap",heap
+
+	heap.update_key(s.i,1)
+
 	print heap
-
-	print heap.pop()
-
-	print heap
-
-	print manhattan_distance( (2,0), (4,4) )
 		
