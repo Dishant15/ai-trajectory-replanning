@@ -1,5 +1,4 @@
 from Tkinter import *
-from PIL import Image, ImageTk
 
 from utils import random_generation, manhattan_distance
 from search import SearchAgent
@@ -191,6 +190,6 @@ class GridWorld(object):
 if __name__ == '__main__':
 	block_list = [ (2,4) , (4,4) ,[ (2,2), (2,1), (3,2), (3,3), (2,3), (3,4)] ]
 
-	# gameWorld = GridWorld(maze_generator=block_list)
-	GridWorld()
+	gameWorld = GridWorld(maze_generator=block_list)
+	# gameWorld = GridWorld()
 		

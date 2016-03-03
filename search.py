@@ -1,5 +1,4 @@
 from utils import Heap
-from collections import deque
 
 class SearchAgent(object):
 
@@ -57,6 +56,7 @@ class SearchAgent(object):
 		node = self.open_list.pop()
 		if node.f_val > self.goal_node.f_val:
 			print "Search Failed, path can not be reached"
+			self.grid.root.destroy()
 			return None
 		self.expand(node)
 
@@ -76,7 +76,8 @@ class SearchAgent(object):
 		# Move agent along the path provided
 		# Check for changing cost
 		if len(path) == 0:
-			return
+			self.grid.root.destroy()
+			return None
 		next_node = path.pop()
 		self.start_node.clear_agent()
 		self.start_node = next_node
