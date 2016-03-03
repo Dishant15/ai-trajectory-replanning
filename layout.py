@@ -1,4 +1,5 @@
 from Tkinter import *
+from PIL import Image, ImageTk
 
 from utils import random_generation, manhattan_distance
 from search import SearchAgent
@@ -47,13 +48,17 @@ class GridNodes(object):
 		self.blocked = True
 		self.fill_box(color)
 		
-	def place_agent(self, color="orange"):
-		self.fill_box(color)
+	def place_agent(self):
+		# self.fill_box(color)
+		self.grid.root.photo = PhotoImage(file="curr_image.gif")
+		self.image = self.canvas.create_image(self.pos[0]+(self.size/2), self.pos[1]+(self.size/2),image = self.grid.root.photo)
 		# put text item above newly created rectangle
 		self.canvas.tag_raise(self.g_text)
 		self.canvas.tag_raise(self.h_text)
 		self.canvas.tag_raise(self.f_text)
-		# self.canvas.itemconfigure(self.g_text, fill="yellow")
+
+	def clear_agent(self):
+		self.canvas.delete(self.image)
 
 	def make_goal(self,color="green"):
 		self.fill_box(color)
@@ -137,10 +142,10 @@ class GridWorld(object):
 		
 		if hasattr(maze_generator, '__call__'):
 			agent, goal = maze_generator(self)
-			self.agent = self.get_node(agent)
-			self.agent.place_agent()
-			self.goal = self.get_node(goal)
-			self.goal.make_goal()
+			self.agent_node = self.get_node(agent)
+			self.agent_node.place_agent()
+			self.goal_node = self.get_node(goal)
+			self.goal_node.make_goal()
 		else:
 			# maze generator is a list of tiles to block
 			# list = [ (agent pos), (goal pos), [ (x1,y1), ... ] ]
@@ -186,5 +191,6 @@ class GridWorld(object):
 if __name__ == '__main__':
 	block_list = [ (2,4) , (4,4) ,[ (2,2), (2,1), (3,2), (3,3), (2,3), (3,4)] ]
 
-	gameWorld = GridWorld(maze_generator=block_list)
+	# gameWorld = GridWorld(maze_generator=block_list)
+	GridWorld()
 		

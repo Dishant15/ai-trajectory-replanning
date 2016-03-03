@@ -1,4 +1,5 @@
 from utils import Heap
+from collections import deque
 
 class SearchAgent(object):
 
@@ -60,10 +61,26 @@ class SearchAgent(object):
 		self.expand(node)
 
 	def success(self):
+		path_list = []
 		node = self.goal_node
+		path_list.append(node)
 		while True:
-			node.fill_box("yellow")
+			# node.fill_box("yellow")
 			node = node.parent
+			path_list.append(node)
 			if node == self.start_node:
 				break
+		self.move_agent(path_list)
+
+	def move_agent(self,path):
+		# Move agent along the path provided
+		# Check for changing cost
+		if len(path) == 0:
+			return
+		next_node = path.pop()
+		self.start_node.clear_agent()
+		self.start_node = next_node
+		next_node.place_agent()
+		self.grid.root.after(800, lambda:self.move_agent(path))
+
 		

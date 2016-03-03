@@ -6,7 +6,7 @@ def random_generation(grid):
 
 	for x in range(cols):
 		for y in range(rows):
-			if random.random() < 0.3:
+			if random.random() < 0.25:
 				grid.nodes[x][y].block_node()
 
 	while True:
